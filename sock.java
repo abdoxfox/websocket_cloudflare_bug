@@ -8,22 +8,31 @@ import java.util.*;
 public class sock {
   public static String Scan(String Host)throws IOException{  
   System.out.println(Host);
-try {
- Socket s = new Socket(Host,80);
-  s.setSoTimeout(10*1000);
+try{
+  Socket s = new Socket();
+  SocketAddress socketAddress = new InetSocketAddress(Host, 80); 
+  s.connect(socketAddress,2000);
+
   OutputStreamWriter dout=new OutputStreamWriter(s.getOutputStream()); 
+  s.setSoTimeout(2000);
   dout.write("GET / HTTP/1.1\r\nHost: "+Host+"\r\n\r\n");
   dout.flush();  
-  InputStreamReader dis=new InputStreamReader(s.getInputStream());
+  InputStreamReader dis = new InputStreamReader(s.getInputStream());
   BufferedReader bf = new BufferedReader(dis);
-  String str = bf.readLine();  
-
-if (str != null){
-   return Host ;
+  String str; 
+  ArrayList<String> dict = new ArrayList<String>();
+ while ((str = bf.readLine()) != null){
+ dict.add(str);
 }
-else{
- return null ;
-}
+String valid ="";
+for (int n=0; n<dict.size();n++){
+ String m = new String(String.valueOf(dict.get(n)));
+int ch = m.compareTo("Server: cloudflare");
+if (ch ==0)
+{
+System.out.println(dict.get(n));
+return Host;
+}}
 }catch (Exception e){
 System.out.println(e);
 }
@@ -45,7 +54,7 @@ f.close();
   public static void main(String[] args)throws IOException{
  try {
   Scanner sc = new Scanner(System.in);
-  System.out.println("enter starting ip:");
+  System.out.println("enter starting ip: ");
   String ip = sc.nextLine();
   String[] lstf = ip.split("\\.");
 //  Integer frst =Integer.parseInt(lstf[3]);
@@ -59,13 +68,14 @@ for (int i=1;i < 255;i++){
 if (abc == host){ 
   System.out.println("opened !");
    opened.add(host);
+   Save(opened);
 }
 sc.close();
 }
-Save(opened);
 } catch (Exception e) {
   System.out.println(e);
 }
   }
  }
+
 
