@@ -54,7 +54,7 @@ f.close();
   public static void main(String[] args)throws IOException{
  try {
   Scanner sc = new Scanner(System.in);
-  System.out.println("enter starting ip: ");
+  System.out.print("enter starting ip: ");
   String ip = sc.nextLine();
   String[] lstf = ip.split("\\.");
 //  Integer frst =Integer.parseInt(lstf[3]);
